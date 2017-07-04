@@ -28,13 +28,12 @@ app.set( 'view engine', 'hbs' );
    var language = req.body.language;
    console.log(language);
 
-   if(greeted[user] === undefined && language === "isiXhosa"){
+   if(greeted[user] === undefined){
       greeted[user] = 0;
       counter ++
     }
     greeted[user] = greeted[user] + 1;
     req.flash('info', language + user);
-
     req.flash('count', counter);
     res.redirect("greetings");
  });
