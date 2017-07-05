@@ -26,26 +26,17 @@ app.set( 'view engine', 'hbs' );
  app.post('/greetings', function(req,res){
    var user = req.body.name;
    var language = req.body.language;
-   console.log(language);
 
-   if(greeted[user] === undefined && language === "isiXhosa"){
+   if(greeted[user] === undefined){
       greeted[user] = 0;
       counter ++
     }
     greeted[user] = greeted[user] + 1;
     req.flash('info', language + user);
-
     req.flash('count', counter);
     res.redirect("greetings");
  });
-// app.get('/greet/:user', function (req, res) {
-//   var user = req.params.user;
-//
-//
-//
-//   res.send('Hello'+ " " + user +'!')
-// });
-//
+
   app.get('/counter/:user', function (req, res) {
     var user = req.params.user;
     res.send('Hello'+ " " + user +" "+ 'has been greeted ' + " "+ greeted[user] + ' '+ 'times' )
@@ -62,8 +53,6 @@ app.set( 'view engine', 'hbs' );
     });
     res.send("Greeted names list " +linkNames)
   });
-
-
 
   app.listen(3000, function () {
     console.log('Example app listening on port 3000!')
