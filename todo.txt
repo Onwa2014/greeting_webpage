@@ -1,0 +1,7 @@
+# Clean the code up
+
+    * Remove repition
+
+      * move the repetitive code into a function that takes parameters
+
+      * Get rid of the callbacks!

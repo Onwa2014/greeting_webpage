@@ -1,111 +1,111 @@
-let models = null;
+//let models = null;
 var cookieParser = require('cookie-parser');
 var flash = require('express-flash');
 var session = require('express-session');
 
+module.exports = function(theModels) {
+  //set the models for the routes
+  //models = theModels;
+  let User = theModels.User;
 
-let addGreeting = function(req, res, next) {
-  var language = req.body.language
+  let diplayResult = async function(req, res, next, data) {
 
-  let User = models.User;
-  // var counter = models.User.count();
-  // console.log(counter);
-  var actualName = req.body.name;
-  var results = "";
+    try {
+      let counter = await User.count();
+      req.flash('count', counter);
+      req.flash('info', data.language + ", " + data.actualName);
+      res.redirect('/greetings');
+    } catch (err) {
+      return next(err);
+    }
+  }
 
-  User.findOne({
-    name: actualName
-  }, function(err, person) {
-    if (err) {
-      console.log(err)
+  let addGreeting = async function(req, res, next) {
+    var language = req.body.language
+
+    //let User = models.User;
+    // var counter = models.User.count();
+    // console.log(counter);
+    var actualName = req.body.name;
+    var results = "";
+
+    try {
+
+      let person = await User.findOne({
+        name: actualName
+      });
+
+      if (!person) {
+
+        console.log("no person found")
+
+        let newPerson = new User({
+          name: actualName,
+          count: 1
+        });
+
+        await newPerson.save();
+
+      } else {
+        person.count = person.count + 1;
+        await person.save();
+      }
+
+      diplayResult(req, res, next, {
+        language,
+        actualName
+      });
+
+    } catch (err) {
       return next(err);
     }
 
-    if (!person) {
-      console.log("no person found")
+  }
 
-      let newPerson = new User({
-        name: actualName,
-        count: 1
-      });
-      newPerson.save(function(error, data) {
-        if (error) {
-          results = error
-          console.log(error);
-        } else {
-          console.log("successfully added new user");
-          results = data
-          //  counter ++
-          // call count here... - what should you do in the Callback?
-          User.count(function(err, counter) {
-            if (err) {
-              console.log(err);
-              return next(err)
-            } else {
-              console.log(counter);
-              req.flash('count', counter);
-              req.flash('info', language + ", " + actualName);
-              res.redirect('/greetings');
-            }
-          });
-          
-        }
+  let resetData = function(req, res, next) {
+    var task = req.body.reset;
+    console.log(task);
 
-      });
+    //return task
 
-    } else {
-      person.count = person.count + 1;
+    User.remove({}, function(err, data) {
+      if (err) {
+        console.log(err);
+        // return next(err);
+      } else {
+        //console.log(data);
+        res.redirect('/greetings');
+      }
+    });
 
-      var updateDone = function(error, status) {
-        if (error) {
-          console.log(error);
-          return next(err)
-        }
-        //  req.flash('count', counter);
-        req.flash('info', language + ", " + actualName);
-        res.redirect('greetings');
-      };
+  };
 
-      person.save(updateDone);
+  let individualCounter = function(req, res){
+    var user = req.params.user;
+    console.log(user);
+    User.findOne({name:user}, function(err, userdata){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log(userdata);
+        res.render('individualCounter', userdata)
+      }
+    });
+  };
 
-      console.log("Here we go!");
 
-    }
-    // console.log(results);
-    // return results;
-  })
-}
+  let showGreeting = function(req, res) {
+    res.render('greeting');
+  }
 
-let resetData = function(req, res, next) {
-  var task = req.body.reset;
-  console.log(task);
 
-  //return task
 
-  let User = models.User;
-  User.remove({}, function(err, data) {
-    if (err) {
-      console.log(err);
-      // return next(err);
-    } else {
-      console.log(data);
-      res.redirect('/greetings');
-    }
-  });
-
-};
-
-let showGreeting = function(req, res) {
-  res.render('greeting');
-}
-
-module.exports = function(theModels) {
-  //set the models for the routes
-  models = theModels;
 
   return {
     addGreeting,
     showGreeting,
-    resetData
+    resetData,
+    individualCounter
   }
 }

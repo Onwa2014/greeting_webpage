@@ -27,8 +27,10 @@ app.set( 'view engine', 'hbs' );
  app.get('/greetings', greet.showGreeting);
  app.post('/greetings', greet.addGreeting );
 
- app.get('/greetings/reset', greet.showGreeting)
+ app.get('/greetings/reset', greet.showGreeting);
  app.post('/greetings/reset', greet.resetData);
+
+ app.get('/greetings/show/:user', greet.individualCounter)
 
 
  app.use(function(err, req, res, next){
