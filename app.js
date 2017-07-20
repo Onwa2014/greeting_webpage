@@ -27,6 +27,10 @@ app.set( 'view engine', 'hbs' );
  app.get('/greetings', greet.showGreeting);
  app.post('/greetings', greet.addGreeting );
 
+ app.get('/greetings/reset', greet.showGreeting)
+ app.post('/greetings/reset', greet.resetData);
+
+
  app.use(function(err, req, res, next){
    res.send("<h3>Something went wrong!</h3> <pre>" + err.stack + "</pre>")
  });

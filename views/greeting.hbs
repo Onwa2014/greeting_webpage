@@ -2,11 +2,11 @@
   Name: <input type="text" class="name" name=name></input>
   <br>
   <div class="radioBtn">
-    <input type="radio" name="language" value="Molo, ">IsiXhosa
-    <input type="radio" name="language" value="Hello, ">English
-    <input type="radio" name="language" value="Hallo, ">Afrikaans
+    <input type="radio" name="language" value="Molo">IsiXhosa
+    <input type="radio" name="language" value="Hello">English
+    <input type="radio" name="language" value="Hallo">Afrikaans
   </div>
-  <input type='submit' class="submit" value="Greet"></input>
+  <input type='submit' name="greet" class="submit" value="Greet"></input>
 </form
 
 <div class="entry">
@@ -16,4 +16,6 @@
 <div class="entry">
     <h1> {{messages.count}}</h1>
 </div>
-<input type="button" class="reset" value="reset"></input>
+<form class='greetingForm' method="post" action="/greetings/reset">
+  <input type="submit" name="reset" class="reset" value="reset"></input>
+</form>
