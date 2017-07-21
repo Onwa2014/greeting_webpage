@@ -12,9 +12,20 @@ module.exports = function(theModels) {
 
     try {
       let counter = await User.count();
+      console.log(data.language);
+      if( !data.actualName ){
+        req.flash('error', 'Please write a name on the textbox.');
+        res.redirect('/greetings');
+      }
+      else if(!data.language){
+        req.flash('error', 'Please select a language you would like to be greeted on.');
+        res.redirect('/greetings');
+      }
+      else{
       req.flash('count', counter);
       req.flash('info', data.language + ", " + data.actualName);
       res.redirect('/greetings');
+      }
     } catch (err) {
       return next(err);
     }
@@ -80,18 +91,19 @@ module.exports = function(theModels) {
 
   };
 
-  let individualCounter = function(req, res){
+  let individualCounter = async function(req, res, next) {
     var user = req.params.user;
     console.log(user);
-    User.findOne({name:user}, function(err, userdata){
-      if(err){
-        console.log(err);
-      }
-      else{
-        console.log(userdata);
-        res.render('individualCounter', userdata)
-      }
-    });
+    try {
+      let existingUser = await User.findOne({
+        name: user
+      });
+      console.log(existingUser);
+      res.render('individualCounter', existingUser);
+    } catch (err) {
+
+      return next(err)
+    }
   };
 
 
