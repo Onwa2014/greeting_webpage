@@ -26,6 +26,10 @@ app.set( 'view engine', 'hbs' );
  var greeted = {};
  var counter = 0;
 
+
+ app.get('/', function(req,res){
+   res.redirect('/greetings')
+ });
  app.get('/greetings', greet.showGreeting);
  app.post('/greetings', greet.addGreeting );
 
