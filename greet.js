@@ -8,7 +8,7 @@ module.exports = function(theModels) {
   //models = theModels;
   let User = theModels.User;
 
-  let diplayResult = async function(req, res, next, data) {
+  let displayResult = async function(req, res, next, data) {
 
     try {
       let counter = await User.count();
@@ -62,7 +62,7 @@ module.exports = function(theModels) {
         await person.save();
       }
 
-      diplayResult(req, res, next, {
+      displayResult(req, res, next, {
         language,
         actualName
       });
@@ -116,6 +116,7 @@ module.exports = function(theModels) {
 
   return {
     addGreeting,
+    displayResult,
     showGreeting,
     resetData,
     individualCounter
