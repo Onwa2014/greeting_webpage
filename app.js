@@ -7,7 +7,9 @@ var flash = require('express-flash');
 var session = require('express-session');
 var Greet = require('./greet');
 const Models = require('./models');
-const models = Models(process.env.MONGO_URL || 'mongodb://localhost/greetedUsers')
+const port = process.env.PORT || 3000;
+const models = Models(process.env.MONGO_DB_URL || 'mongodb://localhost/greetedUsers')
+// const mongoURL = process.env.MONGO_DB_URL || "'mongodb://localhost/test'";
 //the routes
 let greet = Greet(models);
 //let other = OtherRoutes(models);
@@ -37,6 +39,6 @@ app.set( 'view engine', 'hbs' );
    res.send("<h3>Something went wrong!</h3> <pre>" + err.stack + "</pre>")
  });
 
-app.listen(3000, function () {
+app.listen(port, function () {
     console.log('Example app listening on port 3000!')
 })
