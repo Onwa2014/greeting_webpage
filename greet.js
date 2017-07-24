@@ -116,7 +116,6 @@ module.exports = function(theModels) {
 
   return {
     addGreeting,
-    displayResult,
     showGreeting,
     resetData,
     individualCounter
