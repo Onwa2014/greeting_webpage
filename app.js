@@ -36,6 +36,8 @@ app.set( 'view engine', 'hbs' );
  app.get('/greetings/reset', greet.showGreeting);
  app.post('/greetings/reset', greet.resetData);
 
+ app.get('/greetings/greeted', greet.showGreeted);
+
  app.get('/greetings/show/:user', greet.individualCounter)
 
 

@@ -1,0 +1,64 @@
+body {
+  background-color: #99004d;
+  font-size: 25px;
+
+}
+.header {
+  background-color: #004466;
+  font-size: 150%;
+  height: 3em;
+  margin-bottom: 1em;
+  text-align: center;
+}
+.greetingForm {
+  border: 7px solid black;
+  text-align:center;
+  margin-left: 6em;
+  margin-right: 6em;
+  margin-top: 0.7em
+}
+.resetForm {
+  margin-left: 41.7em;
+}
+.submit {
+  width: 6em;
+  height: 6.1em;
+  border: 5px solid black;
+  border-radius: 76em;
+  background-color: green;
+  margin-top: 1.5em;
+  font-weight: bolder;
+  font-size: 20px;
+  margin-left:2em
+}
+.name{
+  margin-top:0.8em;
+  height: 3em;
+  width: 20em
+}
+.reset {
+  width :7em;
+  height:2em;
+  border: 3px solid black;
+}
+a{
+  margin-left: 37em;
+  color: black;
+}
+ul a{
+  margin-left: -0.12em;
+  /*list-style: none;*/
+}
+ul {
+  list-style: none;
+  border: 7px solid black;
+  margin-left: 6em;
+  margin-right: 6em;
+  text-align:center;
+}
+.msg{
+  border: 7px solid black;
+  margin-left: 6em;
+  margin-right: 6em;
+  text-align:center;
+}

@@ -1,18 +1,16 @@
-//let models = null;
+
 var cookieParser = require('cookie-parser');
 var flash = require('express-flash');
 var session = require('express-session');
 
 module.exports = function(theModels) {
-  //set the models for the routes
-  //models = theModels;
+
   let User = theModels.User;
 
   let displayResult = async function(req, res, next, data) {
 
     try {
       let counter = await User.count();
-      console.log(data.language);
       if( !data.actualName ){
         req.flash('error', 'Please write a name on the textbox.');
         res.redirect('/greetings');
@@ -29,14 +27,11 @@ module.exports = function(theModels) {
     } catch (err) {
       return next(err);
     }
-  }
+  };
 
   let addGreeting = async function(req, res, next) {
     var language = req.body.language
 
-    //let User = models.User;
-    // var counter = models.User.count();
-    // console.log(counter);
     var actualName = req.body.name;
     var results = "";
 
@@ -47,8 +42,6 @@ module.exports = function(theModels) {
       });
 
       if (!person) {
-
-        console.log("no person found")
 
         let newPerson = new User({
           name: actualName,
@@ -75,16 +68,11 @@ module.exports = function(theModels) {
 
   let resetData = function(req, res, next) {
     var task = req.body.reset;
-    console.log(task);
-
-    //return task
 
     User.remove({}, function(err, data) {
       if (err) {
         console.log(err);
-        // return next(err);
       } else {
-        //console.log(data);
         res.redirect('/greetings');
       }
     });
@@ -93,12 +81,10 @@ module.exports = function(theModels) {
 
   let individualCounter = async function(req, res, next) {
     var user = req.params.user;
-    console.log(user);
     try {
       let existingUser = await User.findOne({
         name: user
       });
-      console.log(existingUser);
       res.render('individualCounter', existingUser);
     } catch (err) {
 
@@ -109,15 +95,35 @@ module.exports = function(theModels) {
 
   let showGreeting = function(req, res) {
     res.render('greeting');
-  }
+  };
 
+  let showGreeted = async function(req, res, next){
+    try {
+       let namesGreeted = await User.find({});
+       let greetedList = [];
+       namesGreeted.forEach(function(name){
+         greetedList.push(name.name)
+       })
+       if(greetedList.length === 0)
+       {
+         req.flash('empty', "Sorry there are no names stored on the database yet!")
+         res.render('greeted')
+       }
+       else{
+       res.render('greeted', {greetedList:greetedList})
+      }
+    }
+    catch (err) {
+      return next(err)
+    }
 
-
+  };
 
   return {
     addGreeting,
     showGreeting,
     resetData,
-    individualCounter
+    individualCounter,
+    showGreeted
   }
 }
